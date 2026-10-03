@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+/* Design tokens: docs/plans/2026-10-03-web-app-design.md section 7 */
+@theme {
+  --color-page: #fafafa;
+  --color-card: #ffffff;
+  --color-ink: #0a0a0a;
+  --color-muted: #8a8a90;
+  --color-soft: #51515a;
+  --color-line: #e8e8ec;
+  --color-accent: #ff3d71;
+  --color-phone: #111114;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --radius-card: 16px;
+  --radius-panel: 24px;
+  --radius-xl2: 34px;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--color-page); color: var(--color-ink); -webkit-font-smoothing: antialiased; }
+::selection { background: color-mix(in srgb, var(--color-accent) 25%, transparent); }
+
+/* Sections fade in as they scroll into view (no JS; respects reduced motion). */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal { animation: reveal linear both; animation-timeline: view(); animation-range: entry 0% cover 25%; }
+    @keyframes reveal { from { opacity: 0; filter: blur(6px); transform: translateY(16px); } to { opacity: 1; filter: none; transform: none; } }
+  }
+}
+
+.prose-guide h2 { font-size: 1.6rem; font-weight: 600; letter-spacing: -0.02em; margin: 2.5rem 0 0.75rem; }
+.prose-guide h3 { font-size: 1.15rem; font-weight: 600; margin: 1.75rem 0 0.5rem; }
+.prose-guide p, .prose-guide li { color: var(--color-soft); line-height: 1.75; }
+.prose-guide p { margin: 0 0 1rem; }
+.prose-guide ul, .prose-guide ol { margin: 0 0 1rem 1.25rem; }
+.prose-guide ul { list-style: disc; }
+.prose-guide ol { list-style: decimal; }
+.prose-guide li { margin: 0.35rem 0; }
+.prose-guide a { color: var(--color-ink); text-decoration: underline; text-underline-offset: 3px; }
+.prose-guide strong { color: var(--color-ink); }
+.prose-guide table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 0.95rem; }
+.prose-guide th, .prose-guide td { text-align: left; padding: 0.6rem 0.5rem; border-bottom: 1px solid var(--color-line); }
