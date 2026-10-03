@@ -2,3 +2,4 @@ fixtures/raw/*
 !fixtures/raw/.gitkeep
 # licensed fonts stay out of git; open-licence (OFL) fonts are committed
 worker/fonts/Instagram_Sans*
+worker/fonts/SF-Pro-*

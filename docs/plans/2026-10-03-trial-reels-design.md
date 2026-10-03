@@ -18,7 +18,7 @@ each "must" gets checked. Section numbers like (R4) point to the product doc.
 | Hook and caption writing | Claude API, JSON output, then our own checks | The model writes; code decides if it is allowed (R4). |
 | Face / mouth / eyes | MediaPipe Face Landmarker | Face box for "text never covers face", mouth and eye openness for the cover. |
 | Payments | Stripe Checkout, one price per generation | R10. |
-| Fonts | Instagram Sans (Jordan's copy), Jost (Futura look-alike), Inter (SF Pro look-alike) | Futura, SF Pro and Helvetica Neue files weren't available, and we don't use unlicensed copies. Jost and Inter are SIL Open Font License, committed in `worker/fonts/`. Instagram Sans stays out of git and comes from the private bucket. |
+| Fonts | Instagram Sans (Jordan's copy), Jost (Futura look-alike), Inter (SF Pro look-alike) | Futura, SF Pro and Helvetica Neue files weren't available, and we don't use unlicensed copies. Jost and Inter are SIL Open Font License, committed in `worker/fonts/`. Instagram Sans and SF Pro Display (Jordan's copies) stay out of git and come from the private bucket. SF Pro is behind a setting (`fonts.sf_pro`, off by default) until its licence is confirmed for this use; Inter stands in when off. |
 
 ## 1. The run, end to end
 
