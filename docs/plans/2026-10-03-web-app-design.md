@@ -12,7 +12,7 @@ Everything that isn't that is cut or hidden.
 - One job. One button. One screen for the work.
 - No options on the way in. The tool makes all choices (hooks, looks, covers, captions, order).
 - Every page says what happens next in one short sentence.
-- Design: learn from Fastlane (usefastlane.ai) (see section 7).
+- Design: Fastlane's style system (light, black pill buttons, one sparing accent, huge type), see section 7.
 
 ## 2. Pages (5 total)
 
@@ -68,12 +68,36 @@ No transcript-fixing step and no options (see question 2).
 
 ## 7. Design: learn from Fastlane
 
-Fastlane's site couldn't be opened from the build machine, so the specific layout notes are still to do. What we
-take from it is the **approach**, in our own copy and our own visuals (we don't copy their text or graphics):
-a headline that promises a big outcome in a short time, a product that does the work for you, very little to read.
+Studied usefastlane.ai on 2026-10-03 (desktop 1440 px and phone 390 px). We take its **style system**, not its
+words, logo, images or layout one-for-one.
 
-To finish this section: send screenshots of the Fastlane pages you like (hero, how it works, pricing), and I'll
-write down the layout, type sizes, spacing and colours to follow.
+**What Fastlane does that we follow**
+
+| Pattern | Fastlane | TrialReelMax |
+|---|---|---|
+| Theme | Light, near-white page (`#FAFAFA`), near-black ink (`#0A0A0A`), grey muted text (`#8A8A90`) | Same idea: page `#FAFAFA`, ink `#0A0A0A`, muted `#8A8A90`, borders `#E8E8EC` |
+| One accent, used sparingly | Red-orange (`#FF5A3C`) only on small badges, dots, ticks, and a glow behind the phone | Our accent: **`#FF3D71` (pink-red)**, only on the "New" badge, step dots, ticks and the glow behind the hero phones. Buttons stay black |
+| Type | Geist Sans for everything, Geist Mono for small labels | **Geist Sans + Geist Mono** (free, open licence) |
+| Hero headline | Huge (about 64 px desktop, 36 px phone), tight leading, centred, the **numbers in italic** | "Drop in **1** video. Get **5** trial reels." with the numbers in italic, 64 / 38 px, weight 500, letter-spacing −2% |
+| Above the headline | Small white pill with a red "New" tag | Small pill: "Free first run · no card" |
+| Sub-headline | Two lines of grey text ending in a **bold** phrase | "Upload a talking-head video. We write 5 different hooks from what you said and hand back 5 ready-to-post trial reels, **in about 5 minutes**." |
+| Main button | Black pill, white text, a small white circle with an arrow on the right; the same button in the nav | Black pill "Try it free" + arrow circle, in the hero and the nav |
+| Nav | Floating white pill bar, centred, soft shadow, stays on screen while scrolling | Same: logo left, "Sign in" text + the black "Try it free" pill right |
+| Hero visual | One phone mockup with a coloured glow behind it | One phone (your original) and five smaller phones fanning out of it, each playing a variation, glow behind |
+| Section labels | Tiny mono uppercase label with a red dot ("● SPOTLIGHT") above a large heading | "● HOW IT WORKS", "● PROOF", "● PRICE", "● QUESTIONS" |
+| Proof | A big result stated plainly ("Frank hit 36m views from just one video") beside a phone | "Same video. The hook made it 1,933 views instead of 47." beside four phones with their view counts |
+| Results grid | Dark phone cards with view / like / comment counts on the right edge, like the real app | The 5 variations on the results page use the same idea: dark 9:16 cards, the hook on top, the order number |
+| How it works | Numbered steps "01 02 03" with one line each | 01 Drop your video · 02 We make 5 variations · 03 Post them as trial reels |
+| Pricing | Clean white cards, plan name, one line of who it's for, big price, black button, ticks | **One** card only (we have one price) |
+| FAQ | Plain accordion, one open at a time | Same, 4 questions |
+| Space and motion | Lots of white space; sections fade and un-blur in as you scroll | Same: 120 px between sections on desktop, 72 px on phone; soft fade-in, nothing that moves on its own except the hero videos |
+| Corners | 16 px cards, 24-34 px big panels, full pill buttons | Same: `--radius 16px`, `--radius-lg 24px`, `--radius-xl 34px` |
+
+**What we leave out:** logo walls, Product Hunt badges, testimonials (we don't have them yet, and we don't fake
+them), a long features list, Discord/affiliate blocks, and the giant footer of tool pages. Our footer is one line.
+
+**Phone first.** Fastlane stacks everything into one column on phones with the nav pill still on top; we do the
+same, and the five hero phones become a sideways swipe row.
 
 ## 8. Build order
 
@@ -89,4 +113,3 @@ write down the layout, type sizes, spacing and colours to follow.
 2. **Burned-in captions:** your doc (R6) says to show the transcript so people can fix misheard words before
    export. With no fixing step, I've turned burned-in captions off by default. OK? (The hooks still come from the
    transcript; a misheard word there would be rare and short.)
-3. **Fastlane screenshots** for section 7.
