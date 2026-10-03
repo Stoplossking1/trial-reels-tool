@@ -13,7 +13,7 @@ one strangers like best.
 
 ## 2. Input
 
-- **Must:** one video, vertical (9:16), 5 to 90 seconds, MOV or MP4, up to 500 MB.
+- **Must:** one video, vertical (9:16), at least 5 seconds (no maximum; the 90 s limit was removed 2026-10-03), MOV or MP4, up to 500 MB.
 - **Must:** reject anything else with a plain message ("This video is sideways. Upload a vertical one.").
 - **Must:** the user can type their own hook. If they leave it empty, the tool writes the hooks.
 - **Should:** the user ticks what may change (for example "don't mirror, my video has text in it").
@@ -136,7 +136,7 @@ The tool is ready when all of these are true:
 - [ ] No clipped words at any cut (listen to each version start to finish).
 - [ ] Each version has its own cover (mouth closed) and its own one-line caption.
 - [ ] The posting guide and the "what changed" list are on the download page.
-- [ ] A sideways video, a 3-minute video and a silent video each get a clear error, and no charge.
+- [ ] A sideways video, a too-short video and a silent video each get a clear error, and no charge.
 - [ ] The free run works once per account, then asks for payment.
 - [ ] One full run finishes in a time a person will wait for (measure it and put it on the page).
 

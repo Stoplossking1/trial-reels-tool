@@ -5,7 +5,7 @@ W, H = 1080, 1920
 FPS = 30
 
 # Input limits (R2)
-MIN_S, MAX_S = 5.0, 90.0
+MIN_S = 5.0  # no maximum length (removed 2026-10-03); the 500 MB cap still applies
 MAX_BYTES = 500 * 1024 * 1024
 ASPECT_TOLERANCE = 0.02
 

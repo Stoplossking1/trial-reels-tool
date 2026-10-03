@@ -49,7 +49,7 @@ payment (R10).
 | Not MOV/MP4 (by container, not file name) | "This file isn't a video we can read. Upload an MOV or MP4." |
 | Width ≥ height after applying the rotation tag | "This video is sideways. Upload a vertical one." |
 | Aspect not within 2% of 9:16 | "This video isn't 9:16. Upload a full-screen vertical video." |
-| Under 5 s / over 90 s | "This video is too short. Use 5 to 90 seconds." / "This video is too long. Use 5 to 90 seconds." |
+| Under 5 s (no maximum length since 2026-10-03) | "This video is too short. Use at least 5 seconds." |
 | No audio track, or speech under 2 s total after transcription | "We can't hear anyone talking in this video. The tool needs a spoken video." |
 | Over 500 MB | "This video is over 500 MB." |
 

@@ -77,9 +77,7 @@ def validate(path: str | Path) -> MediaInfo:
         raise InputRejected("not_9_16", "This video isn't 9:16. Upload a full-screen vertical video.")
     dur = float((info.get("format") or {}).get("duration") or video.get("duration") or 0)
     if dur < C.MIN_S:
-        raise InputRejected("too_short", "This video is too short. Use 5 to 90 seconds.")
-    if dur > C.MAX_S:
-        raise InputRejected("too_long", "This video is too long. Use 5 to 90 seconds.")
+        raise InputRejected("too_short", "This video is too short. Use at least 5 seconds.")
     has_audio = any(s.get("codec_type") == "audio" for s in info.get("streams", []))
     if not has_audio:
         raise InputRejected("silent", "We can't hear anyone talking in this video. The tool needs a spoken video.")

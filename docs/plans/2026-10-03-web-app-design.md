@@ -41,7 +41,7 @@ and a SQL query; admin page is a "should").
 
 ## 4. The app (`/app`), one page, three states
 
-1. **Drop.** A big box: "Drop your video here". Small line under it: "Vertical, 5-90 seconds, up to 500 MB".
+1. **Drop.** A big box: "Drop your video here". Small line under it: "Vertical, at least 5 seconds, up to 500 MB".
    Bad file: the plain message from R2 right in the box ("This video is sideways. Upload a vertical one.").
 2. **Making.** One progress bar and a time estimate. "We'll email you when they're ready."
 3. **Ready.** 5 phone-shaped players in posting order. Under each: the hook, a **Copy caption** button,

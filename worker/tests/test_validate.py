@@ -20,9 +20,9 @@ def test_sideways(tmp_path):
     assert e.code == "sideways" and e.message == "This video is sideways. Upload a vertical one."
 
 
-def test_too_long(tmp_path):
+def test_long_video_is_fine(tmp_path):
     v, _ = fixture.make(tmp_path, seconds=180)
-    assert reason(v).code == "too_long"
+    assert media.validate(v).duration > 170  # no maximum length
 
 
 def test_too_short(tmp_path):
