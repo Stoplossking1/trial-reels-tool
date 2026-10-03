@@ -10,9 +10,7 @@ export function AppNav({ right }: { right?: "new" | "free" }) {
           <Link href="/app" className="inline-flex items-center rounded-full bg-ink py-1.5 pl-4 pr-1.5 text-sm font-medium text-white">
             New video <Arrow />
           </Link>
-        ) : (
-          <span className="rounded-full border border-line bg-card px-3 py-1 text-xs text-soft">1 free run</span>
-        )}
+        ) : null}
       </nav>
     </header>
   );

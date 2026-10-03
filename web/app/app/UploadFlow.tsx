@@ -7,10 +7,10 @@ import { UploadIcon } from "@/components/icons";
 import { variants } from "@/lib/demo";
 
 /**
- * Demo upload. Takes any video, plays the approved loading sequence (~15 s), then opens the hardcoded results.
- * Phases (ticks of 100 ms): upload 0-30, hearing 30-50, face 50-65, hooks 65-95, variations 95-150.
+ * Demo upload. Takes any video, plays the approved loading sequence (30 s), then opens the hardcoded results.
+ * Phases (ticks of 100 ms): upload 0-60, hearing 60-100, face 100-130, hooks 130-190, variations 190-300.
  */
-const T = 150;
+const T = 300;
 const PHASES = ["Uploading your video", "Hearing what you said", "Finding your face, so text stays clear of it", "Writing hooks from your words", "Making the variations"];
 
 function fmtMB(bytes: number) {
@@ -41,7 +41,7 @@ export function UploadFlow() {
 
   useEffect(() => {
     if (!file) return;
-    const beforeUnload = (e: BeforeUnloadEvent) => { if (t < 30) e.preventDefault(); };
+    const beforeUnload = (e: BeforeUnloadEvent) => { if (t < 60) e.preventDefault(); };
     window.addEventListener("beforeunload", beforeUnload);
     return () => window.removeEventListener("beforeunload", beforeUnload);
   }, [file, t]);
@@ -83,12 +83,12 @@ export function UploadFlow() {
   }
 
   const p = Math.min(1, t / T);
-  const step = t <= 30 ? 0 : t <= 50 ? 1 : t <= 65 ? 2 : t <= 95 ? 3 : 4;
+  const step = t <= 60 ? 0 : t <= 100 ? 1 : t <= 130 ? 2 : t <= 190 ? 3 : 4;
   const done = t >= T;
   const mb = fmtMB(file.size);
-  const hookIdx = Math.min(4, Math.floor((t - 65) / 6));
-  const made = Math.min(5, Math.floor((t - 95) / 11));
-  const eta = done ? "done" : t <= 30 ? `${Math.max(0, Math.ceil((30 - t) / 10))} s` : `about ${step === 4 ? Math.max(1, 5 - made) : 6 - step} min left`;
+  const hookIdx = Math.min(4, Math.floor((t - 130) / 12));
+  const made = Math.min(5, Math.floor((t - 190) / 22));
+  const eta = done ? "done" : t <= 60 ? `${Math.max(0, Math.ceil((60 - t) / 10))} s` : `about ${step === 4 ? Math.max(1, 5 - made) : 6 - step} min left`;
 
   return (
     <div className="mx-auto grid max-w-xl gap-4 rounded-[var(--radius-panel)] border border-line bg-card p-5 shadow-[0_24px_60px_-30px_rgba(0,0,0,.25)] sm:p-6" aria-live="polite">
@@ -96,7 +96,7 @@ export function UploadFlow() {
         <video src={file.url} muted playsInline className="aspect-[9/16] w-9 shrink-0 rounded-md bg-phone object-cover" />
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-semibold">{file.name}</p>
-          <p className="text-xs tabular-nums text-muted">{t < 30 ? `${Math.round((mb * t) / 30)} of ${mb} MB` : `${mb} MB uploaded`}</p>
+          <p className="text-xs tabular-nums text-muted">{t < 60 ? `${Math.round((mb * t) / 60)} of ${mb} MB` : `${mb} MB uploaded`}</p>
         </div>
         <span className="text-xs tabular-nums text-muted">{eta}</span>
       </div>
