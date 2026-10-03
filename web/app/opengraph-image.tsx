@@ -1,11 +1,11 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "TrialReelMax: Drop in 1 video. Get 5 trial reels.";
+export const alt = "TrialReelMax: Drop in 1 video. Get 3 trial reels.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default function OG() {
-  const phones = [0, 1, 2, 3, 4];
+  const phones = [0, 1, 2, 3];
   return new ImageResponse(
     (
       <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", background: "#fafafa", padding: 64, fontFamily: "sans-serif" }}>
@@ -19,7 +19,7 @@ export default function OG() {
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
           <div style={{ display: "flex", flexDirection: "column", fontSize: 78, fontWeight: 500, lineHeight: 1.02, letterSpacing: -3, color: "#0a0a0a" }}>
             <span>Drop in 1 video.</span>
-            <span>Get 5 trial reels.</span>
+            <span>Get 3 trial reels.</span>
           </div>
           <div style={{ display: "flex", gap: 12 }}>
             {phones.map((i) => (

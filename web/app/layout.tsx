@@ -6,7 +6,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  title: { default: `${site.name}: 5 Instagram trial reels from 1 video`, template: `%s · ${site.name}` },
+  title: { default: `${site.name}: 3 Instagram trial reels from 1 video`, template: `%s · ${site.name}` },
   description: site.description,
   applicationName: site.name,
   keywords: [

@@ -5,7 +5,7 @@ export const faq = [
   },
   {
     q: "What does TrialReelMax give me?",
-    a: "From one video you get 5 variations. Each has its own on-screen hook written from what you said in the video, a different look (speed, mirror, zoom, colour, fonts), its own cover frame and its own caption, plus the order to post them in and a short posting guide.",
+    a: "From one video you get 3 variations. Each has its own on-screen hook written from what you said in the video, a different look (speed, mirror, zoom, colour, fonts), its own cover frame and its own caption, plus the order to post them in and a short posting guide.",
   },
   {
     q: "What kind of video works?",
@@ -17,7 +17,7 @@ export const faq = [
   },
   {
     q: "Do you post for me?",
-    a: "No. You download the 5 variations and post each one as a trial reel from the Instagram app, with its own cover and caption.",
+    a: "No. You download the 3 variations and post each one as a trial reel from the Instagram app, with its own cover and caption.",
   },
   {
     q: "Will Instagram treat the variations as copies?",

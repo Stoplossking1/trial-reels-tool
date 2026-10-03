@@ -6,7 +6,7 @@ import { price, site } from "@/lib/site";
 
 const steps = [
   { n: "01", t: "Drop your video", d: "One vertical talking-head video, straight off your phone." },
-  { n: "02", t: "We make 5 variations", d: "5 hooks from your own words, 5 different looks, covers and captions." },
+  { n: "02", t: "We make 3 variations", d: "3 hooks from your own words, 3 different looks, covers and captions." },
   { n: "03", t: "Post them as trial reels", d: "Post in the order we give you. After 24 hours, keep the winner." },
 ];
 
@@ -18,7 +18,7 @@ const proof = [
 ];
 
 function HeroPhones() {
-  const five = variants.slice(0, 5);
+  const five = variants;
   return (
     <div className="relative mx-auto mt-16 flex max-w-5xl items-center justify-center gap-4 px-4 sm:gap-8">
       <div aria-hidden className="pointer-events-none absolute inset-x-10 top-10 -z-10 h-72 rounded-full bg-accent/25 blur-[90px]" />
@@ -60,7 +60,7 @@ export default function Home() {
     {
       "@context": "https://schema.org",
       "@type": "HowTo",
-      name: "How to make 5 Instagram trial reels from one video",
+      name: "How to make 3 Instagram trial reels from one video",
       step: steps.map((s, i) => ({ "@type": "HowToStep", position: i + 1, name: s.t, text: s.d })),
     },
     {
@@ -84,10 +84,10 @@ export default function Home() {
           <h1 className="mx-auto max-w-3xl text-[40px] font-medium leading-[1.02] tracking-[-0.035em] sm:text-[68px]">
             Drop in <em className="font-medium">1</em> video.
             <br />
-            Get <em className="font-medium">5</em> trial reels.
+            Get <em className="font-medium">3</em> trial reels.
           </h1>
           <p className="mx-auto mt-6 max-w-xl text-[17px] leading-relaxed text-muted">
-            Upload a talking-head video. We write 5 different hooks from what you said and hand back 5 ready-to-post
+            Upload a talking-head video. We write 3 different hooks from what you said and hand back 3 ready-to-post
             Instagram trial reels, <strong className="font-semibold text-ink">each with its own cover and caption</strong>.
           </p>
           <div className="mt-8 flex justify-center">
@@ -137,7 +137,7 @@ export default function Home() {
         {/* What you get */}
         <section className="reveal mx-auto mt-28 max-w-5xl px-4 text-center">
           <Label>What you get</Label>
-          <h2 className="text-3xl font-medium tracking-tight sm:text-5xl">5 variations, ready to post.</h2>
+          <h2 className="text-3xl font-medium tracking-tight sm:text-5xl">3 variations, ready to post.</h2>
           <ul className="mt-12 grid gap-4 text-left sm:grid-cols-2 lg:grid-cols-4">
             {[
               ["A hook from your words", "Number first, problem first, how-to, a name, a question. Never made up."],
@@ -163,11 +163,11 @@ export default function Home() {
             <p className="mt-1 text-6xl font-medium tracking-tight">{price.label}</p>
             <p className="text-muted">per video</p>
             <ul className="mx-auto mt-6 max-w-xs space-y-2 text-left text-soft">
-              {["5 trial reel variations", "5 hooks from your own words", "Covers, captions and posting order", "A failed run is never charged"].map((x) => (
+              {["3 trial reel variations", "3 hooks from your own words", "Covers, captions and posting order", "A failed run is never charged"].map((x) => (
                 <li key={x} className="flex gap-2"><span className="text-accent">✓</span>{x}</li>
               ))}
             </ul>
-            <CTA className="mt-8">Make my first 5 free</CTA>
+            <CTA className="mt-8">Make my first 3 free</CTA>
           </div>
         </section>
 
@@ -190,7 +190,7 @@ export default function Home() {
 
         {/* Final CTA */}
         <section className="reveal mx-auto mt-28 max-w-3xl px-4 text-center">
-          <h2 className="text-4xl font-medium tracking-tight sm:text-6xl">Your first <em>5</em> are free.</h2>
+          <h2 className="text-4xl font-medium tracking-tight sm:text-6xl">Your first <em>3</em> are free.</h2>
           <div className="mt-8 flex justify-center"><CTA>Try it free</CTA></div>
         </section>
       </main>

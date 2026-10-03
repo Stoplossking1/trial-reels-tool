@@ -1,6 +1,6 @@
 # TrialReelMax
 
-> TrialReelMax turns one vertical talking-head video into 5 ready-to-post Instagram trial reels. Each variation gets its own on-screen hook written from what the creator actually says in the video, a different look (speed, mirror, zoom, colour, caption font), its own cover frame and its own one-line caption, plus a posting order and a short guide for picking the winner after 24 hours.
+> TrialReelMax turns one vertical talking-head video into 3 ready-to-post Instagram trial reels. Each variation gets its own on-screen hook written from what the creator actually says in the video, a different look (speed, mirror, zoom, colour, caption font), its own cover frame and its own one-line caption, plus a posting order and a short guide for picking the winner after 24 hours.
 
 ## What it is for
 - Testing which opening (hook) strangers watch, using Instagram's trial reels feature (reels shown to non-followers first).
@@ -8,7 +8,7 @@
 
 ## How it works
 1. Upload one vertical (9:16) video, at least 5 seconds, MOV or MP4, up to 500 MB.
-2. TrialReelMax transcribes it, finds the face so text never covers it, writes 5 hooks only from the creator's own words, and renders 5 variations.
+2. TrialReelMax transcribes it, finds the face so text never covers it, writes 3 hooks only from the creator's own words, and renders 3 variations.
 3. Post them as trial reels in the given order; after 24 hours keep the one with about double the views of the middle one.
 
 ## Facts

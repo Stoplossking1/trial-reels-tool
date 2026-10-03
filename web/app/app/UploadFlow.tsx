@@ -60,7 +60,7 @@ export function UploadFlow() {
     return (
       <div className="mx-auto max-w-xl">
         <h1 className="text-center text-3xl font-medium tracking-tight sm:text-4xl">Drop in your video</h1>
-        <p className="mt-2 text-center text-muted">We&apos;ll hand back 5 trial reels with their own hooks, covers and captions.</p>
+        <p className="mt-2 text-center text-muted">We&apos;ll hand back {variants.length} trial reels with their own hooks, covers and captions.</p>
         <label
           htmlFor="video"
           onDragOver={(e) => { e.preventDefault(); setDrag(true); }}
@@ -86,9 +86,10 @@ export function UploadFlow() {
   const step = t <= 60 ? 0 : t <= 100 ? 1 : t <= 130 ? 2 : t <= 190 ? 3 : 4;
   const done = t >= T;
   const mb = fmtMB(file.size);
-  const hookIdx = Math.min(4, Math.floor((t - 130) / 12));
-  const made = Math.min(5, Math.floor((t - 190) / 22));
-  const eta = done ? "done" : t <= 60 ? `${Math.max(0, Math.ceil((60 - t) / 10))} s` : `about ${step === 4 ? Math.max(1, 5 - made) : 6 - step} min left`;
+  const hookIdx = Math.min(variants.length - 1, Math.floor((t - 130) / (60 / variants.length)));
+  const n = variants.length;
+  const made = Math.min(n, Math.floor((t - 190) / (110 / n)));
+  const eta = done ? "done" : t <= 60 ? `${Math.max(0, Math.ceil((60 - t) / 10))} s` : `about ${step === 4 ? Math.max(1, n - made) : 6 - step} min left`;
 
   return (
     <div className="mx-auto grid max-w-xl gap-4 rounded-[var(--radius-panel)] border border-line bg-card p-5 shadow-[0_24px_60px_-30px_rgba(0,0,0,.25)] sm:p-6" aria-live="polite">
@@ -102,7 +103,7 @@ export function UploadFlow() {
       </div>
       <div className="track"><i style={{ width: `${Math.round(p * 100)}%` }} /></div>
       <div className="flex justify-between text-sm">
-        <b className="font-semibold">{done ? "Your 5 trial reels are ready" : PHASES[step]}</b>
+        <b className="font-semibold">{done ? `Your ${n} trial reels are ready` : PHASES[step]}</b>
         <span className="tabular-nums text-muted">{Math.round(p * 100)}%</span>
       </div>
       <ul className="grid gap-1.5 text-sm">
@@ -117,10 +118,10 @@ export function UploadFlow() {
         })}
       </ul>
       <p className="min-h-[1.4em] text-sm text-soft">
-        {step === 3 && <>Hook {hookIdx + 1} of 5: <b className="text-ink">&ldquo;{variants[hookIdx]?.hook}&rdquo;</b></>}
-        {step === 4 && !done && <>Making variation {made + 1} of 5</>}
+        {step === 3 && <>Hook {hookIdx + 1} of {n}: <b className="text-ink">&ldquo;{variants[hookIdx]?.hook}&rdquo;</b></>}
+        {step === 4 && !done && <>Making variation {made + 1} of {n}</>}
       </p>
-      <div className="grid grid-cols-5 gap-2">
+      <div className="mx-auto grid w-full max-w-xs grid-cols-3 gap-2">
         {variants.map((v, i) => {
           const cls = done || (step === 4 && i < made) ? "on" : step === 4 || (step === 3 && i <= hookIdx) ? "busy" : "";
           return (

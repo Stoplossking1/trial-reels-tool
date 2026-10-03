@@ -135,7 +135,7 @@ export function Results() {
         </ol>
       </details>
 
-      <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-5">
+      <div className="mx-auto mt-6 grid max-w-4xl grid-cols-2 gap-x-5 gap-y-8 md:grid-cols-3">
         {variants.map((v, i) => <VariantCard key={v.order} v={v} i={i} state={states[i]} progress={progress[i]} />)}
       </div>
 
