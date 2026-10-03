@@ -17,3 +17,4 @@ import data from "./demo.json";
 export const variants: Variant[] = data.variants;
 export const original = data.original as { video: string; cover: string; seconds: number };
 export const madeIn: string = data.madeIn;
+export const handle: string = data.handle;

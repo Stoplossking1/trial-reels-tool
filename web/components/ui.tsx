@@ -44,7 +44,7 @@ export function Nav() {
       <nav className="mx-auto flex max-w-3xl items-center justify-between rounded-full border border-line/70 bg-white/80 py-2 pl-5 pr-2 shadow-[0_8px_30px_-12px_rgba(0,0,0,.18)] backdrop-blur">
         <Logo />
         <div className="flex items-center gap-4">
-          <Link href="/guides/instagram-trial-reels" className="hidden text-sm text-soft hover:text-ink sm:block">Guide</Link>
+          <Link href="/#how" className="hidden text-sm text-soft hover:text-ink sm:block">How it works</Link>
           <Link href="/#price" className="hidden text-sm text-soft hover:text-ink sm:block">Price</Link>
           <CTA className="!py-1.5 !text-sm">Try it free</CTA>
         </div>
@@ -58,8 +58,7 @@ export function Footer() {
     <footer className="mx-auto mt-24 flex max-w-6xl flex-col items-center justify-between gap-4 border-t border-line px-4 py-10 text-sm text-muted sm:flex-row">
       <Logo />
       <div className="flex flex-wrap items-center justify-center gap-5">
-        <Link href="/guides/instagram-trial-reels" className="hover:text-ink">What are trial reels?</Link>
-        <Link href="/guides/trial-reel-hooks" className="hover:text-ink">Hook ideas</Link>
+        <Link href="/#faq" className="hover:text-ink">FAQ</Link>
         <Link href="/terms" className="hover:text-ink">Terms</Link>
         <Link href="/privacy" className="hover:text-ink">Privacy</Link>
         <a href="mailto:hello@trialreelmax.com" className="hover:text-ink">Contact</a>

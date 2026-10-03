@@ -41,3 +41,42 @@ body { background: var(--color-page); color: var(--color-ink); -webkit-font-smoo
 .prose-guide strong { color: var(--color-ink); }
 .prose-guide table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 0.95rem; }
 .prose-guide th, .prose-guide td { text-align: left; padding: 0.6rem 0.5rem; border-bottom: 1px solid var(--color-line); }
+
+/* ---------- loading (approved design: docs/plans, artifact v3) ---------- */
+.track { height: 6px; border-radius: 999px; background: var(--color-page); border: 1px solid var(--color-line); overflow: hidden; }
+.track > i { display: block; height: 100%; background: var(--color-ink); border-radius: inherit; transition: width .25s linear; }
+.slot { aspect-ratio: 9/16; border-radius: 10px; background: var(--color-page); border: 1px solid var(--color-line); position: relative; overflow: hidden; }
+.slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.04); transition: opacity .5s ease, transform .5s ease; }
+.slot.on img { opacity: 1; transform: none; }
+.slot.busy::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 20%, rgba(255,61,113,.14) 50%, transparent 80%); animation: shimmer 1.2s linear infinite; }
+@keyframes shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+.rise { animation: rise .5s ease both; }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* ---------- post to instagram ---------- */
+.ig-grad { background: linear-gradient(45deg, #feda75 0%, #fa7e1e 22%, #d62976 50%, #962fbf 75%, #4f5bd5 100%); }
+.igbtn { position: relative; overflow: hidden; background: linear-gradient(45deg, #feda75 0%, #fa7e1e 22%, #d62976 50%, #962fbf 75%, #4f5bd5 100%); background-size: 180% 180%; animation: igshift 6s ease infinite; box-shadow: 0 14px 34px -12px rgba(214,41,118,.65); transition: transform .15s ease, box-shadow .15s ease; }
+.igbtn:hover { transform: translateY(-1px); box-shadow: 0 18px 40px -12px rgba(214,41,118,.75); }
+.igbtn:active { transform: scale(.98); }
+.igbtn::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.35) 50%, transparent 70%); transform: translateX(-120%); animation: sheen 3.2s ease-in-out infinite; }
+@keyframes igshift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+@keyframes sheen { 0%, 60% { transform: translateX(-120%); } 100% { transform: translateX(120%); } }
+.pov { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(10,10,10,0); transition: background .3s ease; pointer-events: none; }
+.pov .ring { width: 52px; height: 52px; opacity: 0; transform: scale(.8); transition: opacity .25s ease, transform .25s ease; }
+.pov .ring circle.p { stroke-dasharray: 113; transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dashoffset .2s linear; }
+.pov .done { position: absolute; left: 50%; top: 50%; width: 52px; height: 52px; margin: -26px 0 0 -26px; border-radius: 50%; display: grid; place-items: center; opacity: 0; }
+.pov .live { position: absolute; left: 8px; right: 8px; bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 11px; font-weight: 600; color: #fff; background: rgba(0,0,0,.55); backdrop-filter: blur(4px); border-radius: 999px; padding: 5px 8px; opacity: 0; transform: translateY(6px); transition: opacity .3s ease, transform .3s ease; }
+.pov .live i { width: 6px; height: 6px; border-radius: 50%; background: #2ee66b; animation: pulse 1.6s ease infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(46,230,107,.6); } 100% { box-shadow: 0 0 0 7px rgba(46,230,107,0); } }
+.posting .pov { background: rgba(10,10,10,.45); }
+.posting .pov .ring { opacity: 1; transform: none; }
+.posted .pov .done { animation: pop .55s cubic-bezier(.2,1.6,.4,1) both, fadeaway .4s ease 1.1s forwards; }
+.posted .pov .live { opacity: 1; transform: none; }
+.posted .phone-frame { box-shadow: 0 0 0 2px #fff, 0 0 0 4px #d62976, 0 20px 44px -18px rgba(0,0,0,.5); transition: box-shadow .4s ease; }
+@keyframes pop { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: scale(1); } }
+@keyframes fadeaway { to { opacity: 0; transform: scale(1.15); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .slot.busy::after, .rise, .igbtn, .igbtn::after, .pov .live i { animation: none; }
+  .posted .pov .done { animation: none; opacity: 0; }
+}

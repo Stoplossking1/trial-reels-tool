@@ -1,5 +1,56 @@
 {
-  "madeIn": "about 6 minutes",
-  "original": { "video": "/demo/original.mp4", "cover": "/demo/original.jpg", "seconds": 0 },
-  "variants": []
+ "madeIn": "about 6 minutes",
+ "handle": "@yourhandle",
+ "original": {
+  "video": "/demo/5.mp4",
+  "cover": "/demo/5.jpg",
+  "seconds": 84
+ },
+ "variants": [
+  {
+   "order": 1,
+   "hook": "1.1 million views. Only 49 signups",
+   "pattern": "number first",
+   "caption": "1.1 million views and only 49 signups. here's what fixed it",
+   "changes": [],
+   "video": "/demo/1.mp4",
+   "cover": "/demo/1.jpg"
+  },
+  {
+   "order": 2,
+   "hook": "Stop counting views. Count signups instead",
+   "pattern": "problem first",
+   "caption": "stop counting views, count signups per 1000 views instead",
+   "changes": [],
+   "video": "/demo/2.mp4",
+   "cover": "/demo/2.jpg"
+  },
+  {
+   "order": 3,
+   "hook": "How to make content that drives downloads",
+   "pattern": "how to",
+   "caption": "how i make content that drives app downloads, not just views",
+   "changes": [],
+   "video": "/demo/3.mp4",
+   "cover": "/demo/3.jpg"
+  },
+  {
+   "order": 4,
+   "hook": "Why did 180k views beat 1.1 million?",
+   "pattern": "question",
+   "caption": "180k views brought in three times more signups than 1.1 million",
+   "changes": [],
+   "video": "/demo/4.mp4",
+   "cover": "/demo/4.jpg"
+  },
+  {
+   "order": 5,
+   "hook": "Your video, cleaned up",
+   "pattern": "original",
+   "caption": "easy views warm up the account, hard views get the signups. my mix is 80/20",
+   "changes": [],
+   "video": "/demo/5.mp4",
+   "cover": "/demo/5.jpg"
+  }
+ ]
 }

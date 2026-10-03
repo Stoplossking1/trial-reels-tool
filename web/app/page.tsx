@@ -31,11 +31,9 @@ function HeroPhones() {
         <path d="M2 12h40M34 4l8 8-8 8" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" />
       </svg>
       <div className="-mr-4 flex snap-x gap-3 overflow-x-auto pb-4 pr-4 sm:mr-0 sm:overflow-visible sm:pr-0">
-        {(five.length ? five : Array.from({ length: 5 })).map((v, i) => (
-          <Phone key={i} className="w-[96px] shrink-0 snap-start sm:w-[118px]" label={`#${i + 1}`}>
-            {v && (v as { cover: string }).cover && (
-              <Image src={(v as { cover: string }).cover} alt={`Variation ${i + 1}: ${(v as { hook: string }).hook}`} fill sizes="118px" className="object-cover" />
-            )}
+        {five.map((v, i) => (
+          <Phone key={v.order} className="w-[96px] shrink-0 snap-start sm:w-[118px]" label={`#${i + 1}`}>
+            <Image src={v.cover} alt={`Variation ${i + 1}: ${v.hook}`} fill sizes="118px" className="object-cover" />
           </Phone>
         ))}
       </div>
