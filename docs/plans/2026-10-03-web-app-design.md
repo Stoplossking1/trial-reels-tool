@@ -1,6 +1,6 @@
-# Trial reel tool: web app spec
+# TrialReelMax: web app spec
 
-Written 2026-10-03. Covers milestones M3 (web app) and M4 (money) from `2026-10-03-trial-reels-design.md`.
+Written 2026-10-03. Domain: **trialreelmax.com**. Covers milestones M3 (web app) and M4 (money) from `2026-10-03-trial-reels-design.md`.
 The product rules live in `docs/ready.md` (R-numbers below point there). The video work is the `worker/` CLI,
 already built; the web app wraps it.
 
@@ -51,6 +51,29 @@ Design tokens (Tailwind theme):
 
 Dark by default, follows the system setting, with a toggle in the user menu. Must work at 375 px wide
 (most creators will open it on their phone).
+
+## 1a. Competitors and positioning
+
+Researched 2026-10-03 (from search results; their sites were blocked from the build machine, so look at them
+yourself before launch). We copy no one's wording or visuals: we take the **patterns** that work, write our
+own copy, and draw our own design.
+
+| Product | What it does | Lesson for us |
+|---|---|---|
+| **Reeleaze** (reeleaze.com), the closest | "Test more hooks. Post the winners." You bring clips and hook lines; it renders trial-reel variants and **posts them through the Instagram API** on a schedule, multiple accounts, starts free with 100 credits. Says Instagram allows **20** trial uploads a day. | Same category. They automate posting; you write the hooks. We write the hooks from your own words and check every version against the safe area and the rules, from **one** video. |
+| Invideo, Fliki, Zeely, HeyGen | Generate reels from a script or idea with AI voice, avatars and stock footage; batch modes for variants. | Generic generators. Our pitch: *your* face and voice, untouched; only the hook and look change. |
+| OpusClip | Long video → short clips with hooks; from $9/month. | Different input (long-form). Shows creators will pay a monthly fee for this kind of tool. |
+| Sovran, Arcads | Hook testing for paid ads, $99-220/month. | The business end of the market; our price should sit well under theirs. |
+| Free hook generators (Kubes, Junia, TryPost) | Text-only hook ideas. | They write lines; we deliver finished, ready-to-post videos. |
+
+**Our position:** "The only one that starts from *your* video and gives you back finished trial reels with hooks
+taken from what you actually said, checked so nothing covers your face or Instagram's buttons."
+
+**Two things to settle because of Reeleaze:**
+1. **Daily cap.** Our guide says about 5 trials a day (from the guides we read); Reeleaze says 20. Before launch,
+   check Instagram's current help page and use one number everywhere (R8 rule 2, the "post today/tomorrow" badges).
+2. **Posting for the user.** R9 keeps auto-posting out of this version. Reeleaze shows it's possible through the
+   official API. Should: add "Post as trial reels" (Meta login, Instagram Graph API) after launch.
 
 ## 2. Pages
 
@@ -321,7 +344,7 @@ than English.
 
 ## 16. Open questions
 
-1. **Product name and domain.** The spec says "the tool". What's it called, and which domain?
+1. ~~Product name and domain~~ TrialReelMax, trialreelmax.com (2026-10-03).
 2. **Currency.** Pounds, dollars or euros first? (Stripe can show local prices later.)
 3. **Pack sizes.** Are 1 / 5 / 15 credits right, or do you want a monthly plan from day one?
 4. **Accent colour / brand.** Is there an existing brand (your account, apmode) to match? Otherwise the pink above.
