@@ -18,7 +18,7 @@ each "must" gets checked. Section numbers like (R4) point to the product doc.
 | Hook and caption writing | Claude API, JSON output, then our own checks | The model writes; code decides if it is allowed (R4). |
 | Face / mouth / eyes | MediaPipe Face Landmarker | Face box for "text never covers face", mouth and eye openness for the cover. |
 | Payments | Stripe Checkout, one price per generation | R10. |
-| Fonts | Licensed copies of Futura, SF Pro Display, Helvetica Neue (Jordan holds the licences) | Kept out of git; the worker downloads them from the private bucket at start. |
+| Fonts | Instagram Sans (Jordan's copy), Jost (Futura look-alike), Inter (SF Pro look-alike) | Futura, SF Pro and Helvetica Neue files weren't available, and we don't use unlicensed copies. Jost and Inter are SIL Open Font License, committed in `worker/fonts/`. Instagram Sans stays out of git and comes from the private bucket. |
 
 ## 1. The run, end to end
 
@@ -79,13 +79,13 @@ every check below possible on the plan before we spend render time.
   "hook": { "text": "3 tools I stopped paying for", "pattern": "number_first", "source_words": [41, 48] },
   "speed": 1.2, "mirror": true, "zoom": 1.03,
   "color": { "brightness": 0.02, "saturation": 1.03 },
-  "caption": { "on": true, "font": "Futura", "size": "medium" },
+  "caption": { "on": true, "font": "Jost", "size": "medium" },
   "hook_style": "white_shadow",
   "start_trim_s": 0.5,
   "crf": 20,
   "cover": { "time_s": 6.4, "text": "3 tools I stopped paying for" },
   "post_caption": "the three apps i cancelled this month and what replaced them",
-  "what_changed": ["hook: number first", "mirrored", "1.2x", "Futura captions", "zoom 3%"]
+  "what_changed": ["hook: number first", "mirrored", "1.2x", "Jost captions", "zoom 3%"]
 }
 ```
 
@@ -102,7 +102,7 @@ video" check — it's their own words). If fewer good hooks than versions remain
 fewer versions and say why. Never pad with a duplicate hook.
 
 **Look (R5).** Pick values from the R5 ranges. Generate combinations, then accept a set only when **every pair** of
-versions differs in at least 3 of: speed, mirror, zoom, colour, caption font, caption size, hook style, start trim,
+versions differs in at least 3 of: speed, mirror, zoom, colour, caption font (Instagram Sans / Jost / Inter), caption size, hook style, start trim,
 re-export quality. "Differs" uses minimum steps so it's real: speed ≥ 0.04x apart, zoom ≥ 0.015 apart, brightness or
 saturation ≥ 0.01 apart, trim ≥ 0.2 s apart, CRF ≥ 2 apart. Mirror is never used if the user ticked "has text".
 Re-export always differs (CRF 18–24, plus a different GOP size) so every file is byte-different.
@@ -217,7 +217,7 @@ docs/            ready.md (product doc), plans/ (this design + implementation pl
 worker/          python package: validate.py transcribe.py plan/ (hooks.py look.py captions.py cover.py order.py)
                  render.py overlays.py checks/ (safe_area.py timing.py face.py audio.py uniqueness.py) cli.py
 worker/tests/    unit + golden tests, fixtures (short clips, made-up plans)
-worker/fonts/    empty in git; licensed fonts downloaded from the bucket at start
+worker/fonts/    Jost + Inter (OFL, committed); Instagram Sans downloaded from the bucket at start
 web/             Next.js app
 web/db/          migrations (Drizzle)
 reference/research/hook-bank.md   copied from the content repo
@@ -225,7 +225,7 @@ reference/research/hook-bank.md   copied from the content repo
 
 ## 6. Answers (2026-10-03)
 
-1. Fonts: Jordan has licences for Futura, SF Pro Display and Helvetica Neue.
+1. Fonts: caption fonts are Instagram Sans, Jost and Inter (replacing Futura, SF Pro Display, Helvetica Neue in R5). Never Avenir Next still holds.
 2. Test files: go in `fixtures/raw/` (videos, not in git, see `fixtures/README.md`), `reference/research/hook-bank.md`
    and `reference/skills/daily-content/SKILL.md`.
 3. Keep files 14 days, then delete video and covers; keep plans and costs.
