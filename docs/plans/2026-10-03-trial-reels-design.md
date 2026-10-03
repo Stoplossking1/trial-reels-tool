@@ -18,7 +18,7 @@ each "must" gets checked. Section numbers like (R4) point to the product doc.
 | Hook and caption writing | Claude API, JSON output, then our own checks | The model writes; code decides if it is allowed (R4). |
 | Face / mouth / eyes | MediaPipe Face Landmarker | Face box for "text never covers face", mouth and eye openness for the cover. |
 | Payments | Stripe Checkout, one price per generation | R10. |
-| Fonts | Instagram Sans (Jordan's copy), Jost (Futura look-alike), Inter (SF Pro look-alike) | Futura, SF Pro and Helvetica Neue files weren't available, and we don't use unlicensed copies. Jost and Inter are SIL Open Font License, committed in `worker/fonts/`. Instagram Sans and SF Pro Display (Jordan's copies) stay out of git and come from the private bucket. SF Pro is behind a setting (`fonts.sf_pro`, off by default) until its licence is confirmed for this use; Inter stands in when off. |
+| Fonts | Instagram Sans (Jordan's copy), Jost (Futura look-alike), Inter (SF Pro look-alike) | Futura, SF Pro and Helvetica Neue files weren't available, and we don't use unlicensed copies. Jost and Inter are SIL Open Font License, committed in `worker/fonts/`. Instagram Sans and SF Pro Display (Jordan's copies) stay out of git and come from the private bucket. Jordan confirmed 2026-10-03 that his SF Pro licence covers this use, so SF Pro is a normal caption font. |
 
 ## 1. The run, end to end
 
@@ -102,7 +102,7 @@ video" check — it's their own words). If fewer good hooks than versions remain
 fewer versions and say why. Never pad with a duplicate hook.
 
 **Look (R5).** Pick values from the R5 ranges. Generate combinations, then accept a set only when **every pair** of
-versions differs in at least 3 of: speed, mirror, zoom, colour, caption font (Instagram Sans / Jost / Inter), caption size, hook style, start trim,
+versions differs in at least 3 of: speed, mirror, zoom, colour, caption font (Instagram Sans / SF Pro Display / Jost / Inter), caption size, hook style, start trim,
 re-export quality. "Differs" uses minimum steps so it's real: speed ≥ 0.04x apart, zoom ≥ 0.015 apart, brightness or
 saturation ≥ 0.01 apart, trim ≥ 0.2 s apart, CRF ≥ 2 apart. Mirror is never used if the user ticked "has text".
 Re-export always differs (CRF 18–24, plus a different GOP size) so every file is byte-different.
