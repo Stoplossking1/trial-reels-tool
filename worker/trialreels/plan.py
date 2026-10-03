@@ -63,6 +63,20 @@ class Geometry:
         return out_t * self.look.speed + self.look.trim
 
 
+def max_safe_zoom(track: "Track") -> float:
+    """Largest zoom in range that keeps every tracked face and hand in frame, mirrored or not."""
+    boxes = track.all_boxes()
+    z = C.ZOOM_RANGE[1]
+    while z > C.ZOOM_RANGE[0] + 1e-9:
+        lk = Look(1.0, False, round(z, 3), 0, 1, "", "", "", 0, 0, 0)
+        ok = all(Geometry(Look(**{**lk.to_dict(), "mirror": m}), track.median_face_center()).in_crop(b)
+                 for m in (False, True) for b in boxes)
+        if ok:
+            return round(z, 3)
+        z -= 0.005
+    return C.ZOOM_RANGE[0]
+
+
 def overlap(a, b) -> bool:
     return a[0] < b[2] and b[0] < a[2] and a[1] < b[3] and b[1] < a[3]
 
@@ -112,6 +126,17 @@ CAPTION_SLOTS = ("above_buttons", "bottom", "top", "upper")
 
 def face_boxes(track: Track, geo: Geometry, t0: float, t1: float) -> list:
     return [geo.out_box(s.face, C.FACE_PAD) for s in track.between(geo.src_t(t0), geo.src_t(t1)) if s.face]
+
+
+def clear_slot(w: int, h: int, t0: float, t1: float, slots, track: Track, geo: Geometry) -> tuple[int, int] | None:
+    """A slot where the box is in the safe area and never touches the face, or None."""
+    faces = face_boxes(track, geo, t0, t1)
+    for name in slots:
+        x, y = _slot(name, w, h)
+        box = (x, y, x + w, y + h)
+        if in_safe_area(box) and not any(overlap(box, f) for f in faces):
+            return x, y
+    return None
 
 
 def place(w: int, h: int, t0: float, t1: float, slots, track: Track, geo: Geometry) -> tuple[int, int]:
@@ -216,14 +241,23 @@ def build(idx: int, hook: Hook, look: Look, t: Transcript, track: Track, src_dur
     out_dur = (src_dur - look.trim) / look.speed
     vp = VersionPlan(idx, hook, look, geo.face_center, round(out_dur, 3), captions_on=captions_on)
 
-    hook_img = O.fit_hook(hook.text, look.font, look.hook_style)
-    if hook_img is None or hook_img.cap_px < C.MIN_TEXT_PX:
-        return None
     a, b = t.sentences[0]
     hook_end = min(max(geo.out_t(t.words[b].end), C.HOOK_MIN_S), C.HOOK_MAX_S, out_dur)
+    # Largest size that fits somewhere clear of the face; step the size down before giving up.
+    hook_img, xy = None, None
+    for size in (84, 76, 68, 60, 52):
+        img = O.fit_hook(hook.text, look.font, look.hook_style, start_size=size)
+        if img is None or img.cap_px < C.MIN_TEXT_PX:
+            break
+        hook_img = img
+        xy = clear_slot(*img.image.size, 0.0, hook_end, HOOK_SLOTS, track, geo)
+        if xy:
+            break
+    if hook_img is None:
+        return None
     png = O.save(hook_img, workdir / f"v{idx}_hook.png")
     w, h = hook_img.image.size
-    x, y = place(w, h, 0.0, hook_end, HOOK_SLOTS, track, geo)
+    x, y = xy or place(w, h, 0.0, hook_end, HOOK_SLOTS, track, geo)
     vp.overlays.append(Overlay("hook", hook.text, str(png), x, y, w, h, 0.0, round(hook_end, 3), hook_img.cap_px))
 
     if captions_on:

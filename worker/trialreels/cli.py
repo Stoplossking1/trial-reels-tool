@@ -25,6 +25,8 @@ def main(argv: list[str] | None = None) -> int:
     r.add_argument("--track", help="face track JSON from an earlier run (_work/track.json)")
     r.add_argument("--offline", action="store_true", help="no Claude: hooks and captions cut from the transcript")
     r.add_argument("--seed", type=int)
+    r.add_argument("--hooks-file", help="JSON list of {text, pattern, source_quote} hook candidates (checked like Claude's)")
+    r.add_argument("--captions-file", help="JSON list of caption candidates (checked)")
 
     t = sub.add_parser("transcribe", help="transcript only, to fix misheard words before `run`")
     t.add_argument("input")
@@ -49,7 +51,7 @@ def main(argv: list[str] | None = None) -> int:
         else:
             from .pipeline import run
             rep = run(a.input, a.out, a.versions, a.hook, a.has_text, a.transcript, a.track, a.offline, a.seed,
-                      not a.no_captions)
+                      not a.no_captions, hooks_file=a.hooks_file, captions_file=a.captions_file)
             print(f"\n{len(rep['versions'])} versions in {rep['seconds']}s -> {a.out}")
             for v in rep["versions"]:
                 print(f"  {v['post_order']}. {v['hook']!r}  [{'; '.join(v['what_changed'])}]")

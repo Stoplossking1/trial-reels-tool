@@ -68,7 +68,9 @@ def get_hooks(t: Transcript, n: int, own_hook: str | None, use_claude: bool, usa
 
 def run(src: str | Path, out_dir: str | Path, n: int = C.DEFAULT_VERSIONS, own_hook: str | None = None,
         has_text: bool = False, transcript_path: str | Path | None = None, track_path: str | Path | None = None,
-        offline: bool = False, seed: int | None = None, captions_on: bool = True, quiet: bool = False) -> dict:
+        offline: bool = False, seed: int | None = None, captions_on: bool = True, quiet: bool = False,
+        hooks_file: str | Path | None = None, captions_file: str | Path | None = None) -> dict:
+    """hooks_file / captions_file: hand-written candidates (JSON). They pass the same checks as Claude's."""
     src, out = Path(src), Path(out_dir)
     n = max(1, min(int(n), C.MAX_VERSIONS))
     out.mkdir(parents=True, exist_ok=True)
@@ -95,7 +97,11 @@ def run(src: str | Path, out_dir: str | Path, n: int = C.DEFAULT_VERSIONS, own_h
     if not offline and not use_claude:
         raise RunFailed("No Claude credentials (ANTHROPIC_API_KEY). Set them, or pass --offline for transcript-cut hooks.")
     usage = writing.Usage()
-    hooks, hook_notes = get_hooks(t, n, own_hook, use_claude, usage)
+    if hooks_file:
+        cands = [writing.Hook(h["text"], h["pattern"], h.get("source_quote", "")) for h in json.loads(Path(hooks_file).read_text())]
+        hooks, hook_notes = writing.pick_hooks(cands, n + 3, t, own_hook)
+    else:
+        hooks, hook_notes = get_hooks(t, n, own_hook, use_claude, usage)
     if not hooks:
         raise RunFailed("No hook passed the checks. " + " | ".join(hook_notes[:5]))
     log.step(f"hooks ({len(hooks)} usable, {len(hook_notes)} rejected)")
@@ -106,10 +112,15 @@ def run(src: str | Path, out_dir: str | Path, n: int = C.DEFAULT_VERSIONS, own_h
     seed = _seed(src) if seed is None else seed
     max_trim = max(0.0, t.words[0].safe_start - 0.05)
     n_plan = min(n, len(hooks))
-    looks = L.make_looks(n_plan, seed, fonts, allow_mirror=not has_text, max_trim=max_trim)
+    max_zoom = P.max_safe_zoom(track)
+    looks = L.make_looks(n_plan, seed, fonts, allow_mirror=not has_text, max_trim=max_trim, max_zoom=max_zoom)
 
-    cap_cands = writing.claude_captions(t, [h.text for h in hooks[:n_plan]], usage) if use_claude \
-        else writing.offline_captions(t, n_plan)
+    if captions_file:
+        cap_cands = json.loads(Path(captions_file).read_text())
+    elif use_claude:
+        cap_cands = writing.claude_captions(t, [h.text for h in hooks[:n_plan]], usage)
+    else:
+        cap_cands = writing.offline_captions(t, n_plan)
     post_caps = writing.pick_captions(cap_cands, n_plan, t)
     cover_ts = P.cover_times(t, track, n_plan * 2, info.duration - 0.5)
     log.step(f"writing done ({len(post_caps)} captions, {len(cover_ts)} cover frames)")
@@ -140,11 +151,11 @@ def run(src: str | Path, out_dir: str | Path, n: int = C.DEFAULT_VERSIONS, own_h
             why = checks.plan_problems(vp, t, track)
             if not why:
                 break
-            zoom_bad = any("zoom crops" in w for w in why)
-            others = [p.look for p in plans] + [l for j, l in enumerate(looks) if j > i]
-            lk = L.replacement(others, seed + 101 * (attempt + 1) + i, fonts, not has_text, lk.crf, lk.gop,
-                               max_trim=max_trim, avoid_zoom=zoom_bad)
             vp = None
+            if attempt < 2:
+                others = [p.look for p in plans] + [l for j, l in enumerate(looks) if j > i]
+                lk = L.replacement(others, seed + 101 * (attempt + 1) + i, fonts, not has_text, lk.crf, lk.gop,
+                                   max_trim=max_trim, max_zoom=max_zoom)
         if vp is None:
             rejected.append({"version": i + 1, "why": why})
             continue

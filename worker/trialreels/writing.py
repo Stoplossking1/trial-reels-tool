@@ -98,7 +98,7 @@ def hook_problems(h: Hook, t: Transcript, own: bool = False) -> list[str]:
         said = low in vocab or (low.endswith("'s") and low[:-2] in vocab)
         # Every capitalised word is a possible name. The first word is capitalised anyway, so it must be
         # said in the video or be a common opener ("How", "Stop", "Your", ...).
-        if bare[:1].isupper() and not said and low not in SMALL_WORDS and not (k == 0 and low in STARTERS):
+        if bare[:1].isupper() and not said and low not in SMALL_WORDS and not ((k == 0 or words[k - 1][-1:] in ".?!:") and low in STARTERS):
             p.append(f"name {bare!r} is not said in the video")
     if h.source_quote and key(h.source_quote) not in key(t.text):
         p.append("source quote is not in the transcript")

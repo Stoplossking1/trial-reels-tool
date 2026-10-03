@@ -62,12 +62,12 @@ def _r(rng: random.Random, lo: float, hi: float, step: float) -> float:
 
 
 def random_look(rng: random.Random, fonts: list[str], allow_mirror: bool, crf: int, gop: int,
-                max_trim: float = C.TRIM_RANGE[1]) -> Look:
+                max_trim: float = C.TRIM_RANGE[1], max_zoom: float = C.ZOOM_RANGE[1]) -> Look:
     lo, hi = C.TRIM_RANGE[0], min(C.TRIM_RANGE[1], max_trim)
     return Look(
         speed=_r(rng, *C.SPEED_RANGE, 0.01),
         mirror=allow_mirror and rng.random() < 0.5,
-        zoom=_r(rng, *C.ZOOM_RANGE, 0.005),
+        zoom=_r(rng, C.ZOOM_RANGE[0], max(C.ZOOM_RANGE[0], min(C.ZOOM_RANGE[1], max_zoom)), 0.005),
         brightness=_r(rng, *C.BRIGHTNESS_RANGE, 0.005),
         saturation=_r(rng, *C.SATURATION_RANGE, 0.005),
         font=rng.choice(fonts),
@@ -80,7 +80,7 @@ def random_look(rng: random.Random, fonts: list[str], allow_mirror: bool, crf: i
 
 
 def make_looks(n: int, seed: int, fonts: list[str], allow_mirror: bool = True,
-               max_trim: float = C.TRIM_RANGE[1], tries: int = 5000) -> list[Look]:
+               max_trim: float = C.TRIM_RANGE[1], max_zoom: float = C.ZOOM_RANGE[1], tries: int = 5000) -> list[Look]:
     """n looks, pairwise >= 3 real differences, no two identical. Re-export always differs."""
     rng = random.Random(seed)
     crfs = rng.sample(list(C.CRF_CHOICES), k=min(n, len(C.CRF_CHOICES)))
@@ -90,20 +90,18 @@ def make_looks(n: int, seed: int, fonts: list[str], allow_mirror: bool = True,
     while len(gops) < n:
         gops.append(rng.choice(C.GOP_CHOICES))
     for _ in range(tries):
-        looks = [random_look(rng, fonts, allow_mirror, crfs[i], gops[i], max_trim) for i in range(n)]
+        looks = [random_look(rng, fonts, allow_mirror, crfs[i], gops[i], max_trim, max_zoom) for i in range(n)]
         if all_pairs_ok(looks) and len(set(looks)) == n:
             return looks
     raise RuntimeError("could not find looks that differ enough")
 
 
 def replacement(existing: list[Look], seed: int, fonts: list[str], allow_mirror: bool, crf: int, gop: int,
-                max_trim: float = C.TRIM_RANGE[1], avoid_zoom: bool = False, tries: int = 5000) -> Look:
+                max_trim: float = C.TRIM_RANGE[1], max_zoom: float = C.ZOOM_RANGE[1], tries: int = 5000) -> Look:
     """A new look for one version that failed its checks, still >= 3 different from all others."""
     rng = random.Random(seed)
     for _ in range(tries):
-        lk = random_look(rng, fonts, allow_mirror, crf, gop, max_trim)
-        if avoid_zoom:
-            lk = Look(**{**lk.to_dict(), "zoom": 1.0})
+        lk = random_look(rng, fonts, allow_mirror, crf, gop, max_trim, max_zoom)
         if all(len(differences(lk, o)) >= C.MIN_LOOK_CHANGES for o in existing) and lk not in existing:
             return lk
     raise RuntimeError("could not find a replacement look")
