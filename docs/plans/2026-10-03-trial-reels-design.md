@@ -12,12 +12,12 @@ each "must" gets checked. Section numbers like (R4) point to the product doc.
 | Video worker | Python 3.12 + FFmpeg, one job per run, on Railway | All the real work is FFmpeg plus small checks. Python has the face and audio libraries. |
 | Database | Railway Postgres | Decided 2026-10-03: Railway for hosting and database, no Supabase. |
 | Files | Railway Storage Bucket (S3-compatible), presigned upload/download URLs | Same provider as the rest. |
-| Sign-in | Auth.js (NextAuth) in the web app: Google + email magic link, sessions in Postgres | Sign-in is needed for the free run (R10). |
+| Sign-in | Clerk, Google only (changed 2026-10-03; see `2026-10-03-web-app-design.md`) | Sign-in is needed for the free run (R10). |
 | Job queue | A `runs` table polled by the worker (`SELECT ... FOR UPDATE SKIP LOCKED`) | No extra service. Enough for launch volume. |
 | Transcript | Paid speech-to-text API with **word timestamps** (Deepgram or OpenAI Whisper API); self-hosted Whisper revisited after M5 cost numbers | Word times drive hook timing, captions, trims and cut safety. |
 | Hook and caption writing | Claude API, JSON output, then our own checks | The model writes; code decides if it is allowed (R4). |
 | Face / mouth / eyes | MediaPipe Face Landmarker | Face box for "text never covers face", mouth and eye openness for the cover. |
-| Payments | Stripe Checkout, one price per generation | R10. |
+| Payments | Stripe Checkout, credit packs (1 credit = 1 generation); see `2026-10-03-web-app-design.md` | R10. |
 | Fonts | Instagram Sans (Jordan's copy), Jost (Futura look-alike), Inter (SF Pro look-alike) | Futura, SF Pro and Helvetica Neue files weren't available, and we don't use unlicensed copies. Jost and Inter are SIL Open Font License, committed in `worker/fonts/`. Instagram Sans, SF Pro Display and Helvetica Neue (Jordan's licensed copies) stay out of git and come from the private bucket. Jordan confirmed 2026-10-03 that his SF Pro and Helvetica Neue licences cover this use. |
 
 ## 1. The run, end to end
