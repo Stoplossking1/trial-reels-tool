@@ -1,0 +1,4 @@
+fixtures/raw/*
+!fixtures/raw/.gitkeep
+worker/fonts/*
+!worker/fonts/.gitkeep

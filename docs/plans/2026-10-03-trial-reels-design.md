@@ -8,15 +8,17 @@ each "must" gets checked. Section numbers like (R4) point to the product doc.
 
 | Decision | Choice | Why |
 |---|---|---|
-| Web app | Next.js (TypeScript) on Vercel or Railway | Upload page, transcript editor, download page, admin. |
+| Web app | Next.js (TypeScript) on Railway | Upload page, transcript editor, download page, admin. |
 | Video worker | Python 3.12 + FFmpeg, one job per run, on Railway | All the real work is FFmpeg plus small checks. Python has the face and audio libraries. |
-| Database, auth, files | Supabase (Postgres, email + Google sign-in, Storage) | Sign-in is needed for the free run (R10). One place for all three. |
+| Database | Railway Postgres | Decided 2026-10-03: Railway for hosting and database, no Supabase. |
+| Files | Railway Storage Bucket (S3-compatible), presigned upload/download URLs | Same provider as the rest. |
+| Sign-in | Auth.js (NextAuth) in the web app: Google + email magic link, sessions in Postgres | Sign-in is needed for the free run (R10). |
 | Job queue | A `runs` table polled by the worker (`SELECT ... FOR UPDATE SKIP LOCKED`) | No extra service. Enough for launch volume. |
-| Transcript | Whisper (`faster-whisper`, `large-v3` on GPU, or the OpenAI/Deepgram API) with **word timestamps** | Word times drive hook timing, captions, trims and cut safety. |
+| Transcript | Paid speech-to-text API with **word timestamps** (Deepgram or OpenAI Whisper API); self-hosted Whisper revisited after M5 cost numbers | Word times drive hook timing, captions, trims and cut safety. |
 | Hook and caption writing | Claude API, JSON output, then our own checks | The model writes; code decides if it is allowed (R4). |
 | Face / mouth / eyes | MediaPipe Face Landmarker | Face box for "text never covers face", mouth and eye openness for the cover. |
 | Payments | Stripe Checkout, one price per generation | R10. |
-| Fonts | Licensed copies of Futura, SF Pro Display, Helvetica Neue bundled with the worker | **Open question 1.** These are Apple/Linotype fonts and are not on a Linux server by default. |
+| Fonts | Licensed copies of Futura, SF Pro Display, Helvetica Neue (Jordan holds the licences) | Kept out of git; the worker downloads them from the private bucket at start. |
 
 ## 1. The run, end to end
 
@@ -33,7 +35,7 @@ payment (R10).
 
 ### 1.1 Upload (R2)
 
-- Browser uploads straight to Supabase Storage with a signed URL (no 500 MB through our server). Limit 500 MB enforced
+- Browser uploads straight to the Railway bucket with a presigned URL (no 500 MB through our server). Limit 500 MB enforced
   on the signed URL and again in the worker.
 - Form fields: optional own hook (text), "my video has text in it, don't mirror" tickbox (the R2 "should", cheap to do
   now), number of versions (default 4, max 5).
@@ -169,7 +171,7 @@ it automatically in normal runs.
 
 Download page per run: for each version in posting order — video player, cover, caption with a copy button,
 "what changed" list, download buttons; a "download all (zip)" button; and the posting guide from R8, word for word.
-Shows "this run took N minutes". Files kept 14 days (**open question 3**).
+Shows "this run took N minutes". Files kept 14 days, then videos and covers are deleted; plans and costs are kept (daily cleanup job).
 
 ## 2. Data model (Postgres)
 
@@ -203,7 +205,7 @@ Each milestone ends with something we can run on `raw/IMG_4239.MOV` and `raw/E51
 |---|---|---|
 | M1 | **Worker CLI, no web.** `trialreels run input.mov --versions 4 --out dir/` does validate → transcribe → plan → render → check, writes videos, covers, captions, `what_changed`, `report.json`. | Both test videos give 4 versions that pass every check in 1.7. |
 | M2 | **Checks hardened.** Unit tests for each rule with made-up plans that should fail; golden test on both test videos. Validation tests with a sideways, 3-minute and silent clip. | All tests pass in CI. |
-| M3 | **Web app.** Sign-in, upload, transcript fix screen, progress, download page with posting guide, run history. Worker pulls jobs from `runs`. | Jordan does a full run in the browser. |
+| M3 | **Web app.** Sign-in, upload, transcript fix screen, progress, download page with posting guide, run history. Worker pulls jobs from `runs` in Railway Postgres. | Jordan does a full run in the browser. |
 | M4 | **Money.** Free run rule, Stripe Checkout, auto-refund on fail, cost tracking, `/admin`. | Free once, then pay; a failed run refunds and keeps the free run. |
 | M5 | **Measure and launch.** 20 timed runs; set price; put run time on the page; R11 checklist signed off by a person. | Every R11 box ticked. |
 | M6 | **Next version (shoulds).** First words heard change (move a stronger sentence to the start at clean cut points), comment-keyword line, per-change "may change" ticks. | After Jordan's 24-hour real test (R11 "after launch"). |
@@ -215,20 +217,17 @@ docs/            ready.md (product doc), plans/ (this design + implementation pl
 worker/          python package: validate.py transcribe.py plan/ (hooks.py look.py captions.py cover.py order.py)
                  render.py overlays.py checks/ (safe_area.py timing.py face.py audio.py uniqueness.py) cli.py
 worker/tests/    unit + golden tests, fixtures (short clips, made-up plans)
-worker/fonts/    licensed font files (not committed if the licence forbids it; loaded from storage instead)
+worker/fonts/    empty in git; licensed fonts downloaded from the bucket at start
 web/             Next.js app
-supabase/        migrations
+web/db/          migrations (Drizzle)
 reference/research/hook-bank.md   copied from the content repo
 ```
 
-## 6. Open questions (need an answer from Jordan)
+## 6. Answers (2026-10-03)
 
-1. **Fonts.** Do we have licences to run Futura, SF Pro Display and Helvetica Neue on a server? SF Pro's licence only
-   allows use in Apple-platform UI mock-ups. If not: pick look-alikes we can license (e.g. Jost for Futura, Inter for
-   SF Pro, Nimbus Sans / Helvetica Now for Helvetica Neue).
-2. **Test files and research.** `raw/IMG_4239.MOV`, `raw/E51D108D-...MOV`, `reference/research/hook-bank.md` and the
-   daily-content skill aren't in this repo. Which repo are they in, or can you upload them?
-3. **Keep files how long?** Proposed 14 days, then delete video and covers, keep plans and costs.
-4. **Transcription:** self-hosted Whisper on a GPU worker (cheaper per run, more ops) or a paid API (simpler)?
-   Proposed: API for launch, revisit after M5 cost numbers.
-5. **Hosting:** fine with Supabase + Railway + Stripe (all already connected to this account)?
+1. Fonts: Jordan has licences for Futura, SF Pro Display and Helvetica Neue.
+2. Test files: go in `fixtures/raw/` (videos, not in git, see `fixtures/README.md`), `reference/research/hook-bank.md`
+   and `reference/skills/daily-content/SKILL.md`.
+3. Keep files 14 days, then delete video and covers; keep plans and costs.
+4. Transcription: paid API at launch.
+5. Hosting: Railway for app, worker, Postgres and file bucket. Stripe for payments. No Supabase.
