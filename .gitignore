@@ -3,3 +3,4 @@ fixtures/raw/*
 # licensed fonts stay out of git; open-licence (OFL) fonts are committed
 worker/fonts/Instagram_Sans*
 worker/fonts/SF-Pro-*
+worker/fonts/Helvetica-Neue-*
