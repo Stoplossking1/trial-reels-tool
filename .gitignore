@@ -4,3 +4,8 @@ fixtures/raw/*
 worker/fonts/Instagram_Sans*
 worker/fonts/SF-Pro-*
 worker/fonts/Helvetica-Neue-*
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+out/

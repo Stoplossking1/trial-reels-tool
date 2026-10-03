@@ -223,7 +223,17 @@ web/db/          migrations (Drizzle)
 reference/research/hook-bank.md   copied from the content repo
 ```
 
-## 6. Answers (2026-10-03)
+## 6. Status
+
+- **M1 built (2026-10-03)**, code in `worker/` (see `worker/README.md`). Runs end to end on a synthetic talking head;
+  37 tests cover the input rules, writing rules, look rules, every R6 check and a full run.
+  Not yet run on a real video (the day 1/day 2 files couldn't be downloaded into the build machine) or with real
+  Deepgram/Claude keys (those calls are tested with faked responses).
+- Changes from the plan above, found while building: the face detector looks at square sections of the tall frame
+  (a whole 9:16 frame shrinks the face too much to find); faces and hands are tracked per frame without video-mode
+  tracking; renders run two at a time.
+
+## 7. Answers (2026-10-03)
 
 1. Fonts: caption fonts are Instagram Sans, Jost and Inter (replacing Futura, SF Pro Display, Helvetica Neue in R5). Never Avenir Next still holds.
 2. Test files: go in `fixtures/raw/` (videos, not in git, see `fixtures/README.md`), `reference/research/hook-bank.md`
